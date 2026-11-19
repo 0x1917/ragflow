@@ -116,6 +116,13 @@ function ImagePhotoView({ id, documentId, documentName, index }: ImageItem) {
   return <PhotoView src={src}>{wrapped}</PhotoView>;
 }
 
+// A flick on a touch screen keeps its momentum instead of stopping at the
+// next slide; mouse and arrow navigation still snap slide by slide.
+const CarouselOptions = {
+  align: 'start',
+  breakpoints: { '(pointer: coarse)': { dragFree: true } },
+} as const;
+
 function ImageCarousel({ images }: { images: ImageItem[] }) {
   const buttonVisibilityClass = getButtonVisibilityClass(images.length);
 
@@ -142,12 +149,7 @@ function ImageCarousel({ images }: { images: ImageItem[] }) {
         );
       }}
     >
-      <Carousel
-        className="w-full"
-        opts={{
-          align: 'start',
-        }}
-      >
+      <Carousel className="w-full" opts={CarouselOptions}>
         <CarouselContent>
           {images.map(({ id, documentId, documentName, index }) => (
             <CarouselItem
